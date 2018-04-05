@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			form {
+				text-align: center;
+			}
+			
+			.formtext {
+				display: inline-block;
+				margin-bottom: 5px;
+			}
+			
+			.formtext label {
+				display: inline-block;
+				width: 5em;
+				text-align: right;
+				height: 1em;
+				line-height: 1em;
+				margin-right: 1em;
+			}
+			
+			.inputnode {
+				width: 169px;
+				height: 20px;
+			}
+			
+			.resultnode {
+				display: inline-block;
+				width: 169px;
+				text-align: left;
+				font-size: 12px;
+				color: #aaa;
+			}
+		</style>
+
+		<script type="text/javascript">
+			function checkinput(currentnode) {
+				var textinput = currentnode.value;
+				var textresult = currentnode.parentElement.children[4];
+				var textinputlength = 0;
+				for(var i = 0; i < textinput.length; i++) {
+					textinputlength++;
+					if(textinput.charAt(i).charCodeAt() > 255) {
+						textinputlength++;
+					}
+				}
+
+				if(textinputlength < 4 || textinputlength > 16) {
+					if(textinputlength == 0) {
+						switch(currentnode.parentElement.children[0].innerHTML) {
+							case "名称":
+								textresult.innerHTML = "姓名不能为空";
+								break;
+							case "密码":
+								textresult.innerHTML = "密码不能为空";
+								break;
+							case "确认密码":
+								textresult.innerHTML = "密码不能为空";
+								break;
+							case "邮箱":
+								textresult.innerHTML = "邮箱不能为空";
+								break;
+							case "手机":
+								textresult.innerHTML = "联系电话不能为空";
+								break;
+							default:
+								break;
+						}
+					} else {
+						switch(currentnode.parentElement.children[0].innerHTML) {
+							case "名称":
+								textresult.innerHTML = "名称长度不符";
+								break;
+							case "密码":
+								textresult.innerHTML = "密码长度不符";
+								break;
+							case "确认密码":
+								textresult.innerHTML = "密码长度不符";
+								break;
+							case "邮箱":
+								textresult.innerHTML = "邮箱长度不符";
+								break;
+							case "手机":
+								textresult.innerHTML = "联系电话长度不符";
+								break;
+							default:
+								break;
+						}
+					}
+					textresult.style.color = "red";
+				} else {
+					switch(currentnode.parentElement.children[0].innerHTML) {
+							case "名称":
+								textresult.innerHTML = "格式正确";
+								textresult.style.color = "lightgreen";
+								break;
+							case "密码":
+								textresult.innerHTML = "格式正确";
+								textresult.style.color = "lightgreen";
+								break;
+							case "确认密码":
+							//检验确认密码和密码是否一致
+							if (currentnode.parentElement.children[1].value==currentnode.parentElement.previousElementSibling.previousElementSibling.children[1].value) {
+								textresult.innerHTML = "两次输入一致";
+								textresult.style.color = "lightgreen";
+							}else{
+								textresult.innerHTML = "两次输入不一致";
+								textresult.style.color = "red";
+							}
+								break;
+							case "邮箱":
+							var reg = /^[a-zA-Z0-9_-]+@([a-zA-Z0-9]+\.)+(com|cn|net|org)$/;
+							if (reg.test(currentnode.parentElement.children[1].value)){
+								textresult.innerHTML = "邮箱格式正确";
+								textresult.style.color = "lightgreen";
+							}else{
+								textresult.innerHTML = "邮箱格式不正确";
+								textresult.style.color = "red";
+							}
+								break;
+							case "手机":
+							var reg2 = /^((0\d{2,3}-\d{7,8})|(1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}))$/;   
+							if (reg2.test(currentnode.parentElement.children[1].value)){
+								textresult.innerHTML = "手机格式正确";
+								textresult.style.color = "lightgreen";
+							}else{
+								textresult.innerHTML = "手机格式不正确";
+								textresult.style.color = "red";
+							}
+								break;
+							default:
+								break;
+						}
+				}
+			}
+
+			function checkallinput() {
+				var rednum = 0;
+				var checkedall=0;
+				var resultnodes = document.getElementsByClassName("resultnode");
+				for(var i = 0; i < resultnodes.length; i++) {
+					if(resultnodes[i].style.color == "red") {
+						alert("提交失败");
+						rednum++;
+						break;
+					}
+					if (resultnodes[i].innerHTML!="") {
+						checkedall++;
+					}
+					
+				}
+				if(rednum == 0 && checkedall==5) {
+					alert("提交成功");
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<form action="" method="post">
+			<div class="formtext">
+				<label>名称</label>
+				<input type="text" name="" id="textinput" class="inputnode" value="" /><br />
+				<label></label>
+				<span id="textresult" class="resultnode"></span>
+			</div>
+			<br />
+			<div class="formtext">
+				<label>密码</label>
+				<input type="password" name="" id="passwordinput" class="inputnode" /><br />
+				<label></label>
+				<span id="passwordresult" class="resultnode"></span>
+			</div>
+			<br />
+			<div class="formtext">
+				<label>确认密码</label>
+				<input type="password" name="" id="cfmpsinput" class="inputnode" value="" /><br />
+				<label></label>
+				<span id="cfmpsresult" class="resultnode"></span>
+			</div>
+			<br />
+			<div class="formtext">
+				<label>邮箱</label>
+				<input type="text" name="" id="mailinput" class="inputnode" value="" /><br />
+				<label></label>
+				<span id="mailresult" class="resultnode"></span>
+			</div>
+			<br />
+			<div class="formtext">
+				<label>手机</label>
+				<input type="text" name="" id="phoneinput" class="inputnode" value="" /><br />
+				<label></label>
+				<span id="phoneresult" class="resultnode"></span>
+			</div>
+			<br />
+
+			<input type="submit" value="验证" onclick="checkallinput();return false;" />
+
+		</form>
+		<input class="show" value="判断失焦事件实行次数"/>
+		<script type="text/javascript">
+			var inputlist = document.getElementsByClassName("inputnode");
+			for(var i = 0; i < inputlist.length; i++) {
+				inputlist[i].addEventListener("click", resulthint);
+				inputlist[i].addEventListener("blur", resulthintblur);
+			}
+
+			function resulthint() {
+				var hinttype = this.parentElement.children[0].innerHTML;
+				switch(hinttype) {
+					case "名称":
+						this.parentElement.children[4].innerHTML = "必填，长度为4~16个字符";
+						break;
+					case "密码":
+						this.parentElement.children[4].innerHTML = "必填，长度为4~16个字符";
+						break;
+					case "确认密码":
+						this.parentElement.children[4].innerHTML = "必填，长度为4~16个字符";
+						break;
+					case "邮箱":
+						this.parentElement.children[4].innerHTML = "必填，长度为4~16个字符";
+						break;
+					case "手机":
+						this.parentElement.children[4].innerHTML = "必填，长度为4~16个字符";
+						break;
+					default:
+						break;
+				}
+			}
+			var k = 0;
+			//失焦事件编辑器里执行两次，浏览器里执行一次（正常应该是一次，可能和缓存有关。
+			function resulthintblur() {
+				checkinput(this);
+				k++;
+			}
+			//判断失焦事件执行次数
+			document.onclick = function() {
+				document.getElementsByClassName("show")[0].value = k;
+			}
+		</script>
+	</body>
+
+</html>
