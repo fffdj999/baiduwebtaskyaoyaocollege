@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			.studentinfo {
+				display: block;
+			}
+			
+			.adultinfo {
+				display: none;
+			}
+		</style>
+
+		<script type="text/javascript">
+			function selectchose() {
+				var citychose = document.getElementById("citychose");
+				var schoolchose = document.getElementById("schoolslc");
+				console.log(citychose.value);
+				switch(citychose.value) {
+					case "北京":
+						schoolchose.options.length = 0;
+						schoolchose.options.add(new Option("北京大学1", "北京大学1"));
+						schoolchose.options.add(new Option("北京大学2", "北京大学2"));
+						schoolchose.options.add(new Option("北京大学3", "北京大学3"));
+						break;
+					case "上海":
+						schoolchose.options.length = 0;
+						schoolchose.options.add(new Option("上海大学1", "上海大学1"));
+						schoolchose.options.add(new Option("上海大学2", "上海大学2"));
+						schoolchose.options.add(new Option("上海大学3", "上海大学3"));
+						break;
+					case "广州":
+						schoolchose.options.length = 0;
+						schoolchose.options.add(new Option("广州大学1", "广州大学1"));
+						schoolchose.options.add(new Option("广州大学2", "广州大学2"));
+						schoolchose.options.add(new Option("广州大学3", "广州大学3"));
+						break;
+					default:
+						break;
+				}
+
+			}
+		</script>
+	</head>
+
+	<body>
+		<form action="" method="post">
+			<input type="radio" name="identity" id="student" value="identity1" />
+			<label for="student">在校生</label>
+			<input type="radio" name="identity" id="adult" value="identity2" />
+			<label for="adult">非在校生</label>
+
+			<div class="studentinfo" id="studentinfo">
+				<label>学校</label>
+				<select name="" id="citychose" onchange="selectchose()">
+					<option value="北京">北京</option>
+					<option value="上海">上海</option>
+					<option value="广州">广州</option>
+				</select>
+				<select name="" id="schoolslc">
+					<option value="">北京大学1</option>
+					<option value="">北京大学2</option>
+					<option value="">北京大学3</option>
+				</select>
+			</div>
+			<div class="adultinfo" id="adultinfo">
+				<label>就业单位</label>
+				<input type="text" name="" id="" value="" />
+			</div>
+
+			<script type="text/javascript">
+				var identitylist = document.getElementsByName("identity");
+				for(var i = 0; i < identitylist.length; i++) {
+					identitylist[i].addEventListener("click", idenshow);
+				}
+
+				function idenshow() {
+					var stuinfo = document.getElementById("studentinfo");
+					var adtinfo = document.getElementById("adultinfo");
+					if(this.value == "identity1") {
+						stuinfo.style.display = "block";
+						adtinfo.style.display = "none";
+					}
+					if(this.value == "identity2") {
+						adtinfo.style.display = "block";
+						stuinfo.style.display = "none";
+					}
+				}
+			</script>
+		</form>
+	</body>
+
+</html>
