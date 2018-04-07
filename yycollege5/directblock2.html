@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			body {
+				text-align: center;
+				margin: 0;
+			}
+			
+			.divbody {
+				display: inline-block;
+				position: relative;
+			}
+			
+			.littleBlock {
+				width: 49px;
+				height: 49px;
+				background-color: red;
+				position: absolute;
+				left: 1px;
+				top: 1px;
+				/*很关键，设置transform的过渡效果来制作旋转、移动等的动画*/
+				transition: -webkit-transform 0.3s ease-in-out 0s;
+			}
+			
+			.littleBlockDirection {
+				position: absolute;
+				width: 49px;
+				height: 10px;
+				background-color: cornflowerblue;
+				left: 0;
+				top: 0;
+			}
+			.trabtn,.tramovbtn{
+				display: inline-block;
+				width: 170px;
+				height: 170px;
+				background-color: #aaa;
+				position: relative;
+			}
+			.trabtn input{
+				position: absolute;
+				width: 38%;
+				height: 33%;
+				font-size: 12px;
+			}
+			.trabtn input:nth-child(1){
+				left: 0;
+				top: 50%;
+				transform: translate(0,-50%);
+			}
+			.trabtn input:nth-child(2){
+				left: 50%;
+				top: 0;
+				transform: translate(-50%,-0);
+			}
+			.trabtn input:nth-child(3){
+				right: 0;
+				top: 50%;
+				transform: translate(0,-50%);
+			}
+			.trabtn input:nth-child(4){
+				left: 50%;
+				bottom: 0;
+				transform: translate(-50%,-0);
+			}
+			.tramovbtn input{
+				position: absolute;
+				width: 38%;
+				height: 33%;
+				font-size: 12px;
+			}
+			.tramovbtn input:nth-child(1){
+				left: 0;
+				top: 50%;
+				transform: translate(0,-50%);
+			}
+			.tramovbtn input:nth-child(2){
+				left: 50%;
+				top: 0;
+				transform: translate(-50%,-0);
+			}
+			.tramovbtn input:nth-child(3){
+				right: 0;
+				top: 50%;
+				transform: translate(0,-50%);
+			}
+			.tramovbtn input:nth-child(4){
+				left: 50%;
+				bottom: 0;
+				transform: translate(-50%,-0);
+			}
+			canvas {}
+		</style>
+		<script type="text/javascript">
+			//绘制15*15的棋盘画布
+			function drawChessboard() {
+				var mycanvas = document.getElementById("chessboard");
+				var mycontext = mycanvas.getContext("2d");
+				mycontext.beginPath();
+				for(var i = 0; i < 10; i++) {
+					mycontext.moveTo(1 + 50 * i, 0);
+					mycontext.lineTo(1 + 50 * i, 450);
+					mycontext.moveTo(0, 1 + 50 * i);
+					mycontext.lineTo(450, 1 + 50 * i);
+				}
+				mycontext.strokeStyle = "aqua"; //md阿库娅
+				mycontext.stroke();
+			}
+
+			//tun旋转部分
+			var currentRotate = 0;
+
+			function tunlef() {
+				currentRotate = currentRotate - 90;
+				var littleblock = document.getElementById("littleBlock");
+				littleblock.style.webkitTransform = "translate(" + currentTranslate + "px)" + "rotate(" + currentRotate + "deg)";
+				console.log(currentRotate + "||" + currentTranslate);
+			}
+
+			function tunrig() {
+				currentRotate = currentRotate + 90;
+				var littleblock = document.getElementById("littleBlock");
+				littleblock.style.webkitTransform = "translate(" + currentTranslate + "px)" + "rotate(" + currentRotate + "deg)";
+				console.log(currentRotate);
+			}
+
+			function tunbac() {
+				currentRotate = currentRotate + 180;
+				var littleblock = document.getElementById("littleBlock");
+				littleblock.style.webkitTransform = "translate(" + currentTranslate + "px)" + "rotate(" + currentRotate + "deg)";
+				console.log(currentRotate);
+			}
+
+			//go移动部分
+			var currentTranslateX = 0;
+			var currentTranslateY = 0;
+			var currentTranslate = 0 + "px," + 0;
+
+			function tungo() {
+				switch(currentRotate % 360) {
+					case 90:
+					case -270:
+						currentTranslateX = currentTranslateX + 50;
+						break;
+					case -90:
+					case 270:
+						currentTranslateX = currentTranslateX - 50;
+						break;
+					case 0:
+						currentTranslateY = currentTranslateY - 50;
+						break;
+					case 180:
+					case -180:
+						currentTranslateY = currentTranslateY + 50;
+						break;
+					default:
+						break;
+				}
+				if(currentTranslateX < 0) {
+					currentTranslateX = 0;
+				}
+				if(currentTranslateX > 400) {
+					currentTranslateX = 400;
+				}
+				if(currentTranslateY < 0) {
+					currentTranslateY = 0;
+				}
+				if(currentTranslateY > 400) {
+					currentTranslateY = 400;
+				}
+				currentTranslate = currentTranslateX + "px," + currentTranslateY;
+				var littleblock = document.getElementById("littleBlock");
+				littleblock.style.webkitTransform = "translate(" + currentTranslate + "px)" + "rotate(" + currentRotate + "deg)";
+				console.log(currentRotate);
+			}
+			
+			//TRA和MOV部分
+			//控制旋转从小角度进入，这个逻辑理不清就不写完了
+			function tra(btnnode) {
+				switch(btnnode.value) {
+					case "TRA LEF":
+						currentTranslateX = currentTranslateX - 50;
+						break;
+					case "TRA RIG":
+						currentTranslateX = currentTranslateX + 50;
+						break;
+					case "TRA TOP":
+						currentTranslateY = currentTranslateY - 50;
+						break;
+					case "TRA BOT":
+						currentTranslateY = currentTranslateY + 50;
+						break;
+					case "MOV LEF":
+						currentTranslateX = currentTranslateX - 50;
+						if (currentRotate>=0) {
+							currentRotate = parseInt(currentRotate/360)*360+360-90;
+						}else{
+							currentRotate = parseInt(currentRotate/360)*360-90;
+						}
+						console.log((currentRotate/360)*360);
+						break;
+					case "MOV RIG":
+						currentTranslateX = currentTranslateX + 50;
+						if (currentRotate>=0) {
+							currentRotate = parseInt(currentRotate/360)*360+90;
+						}else{
+							currentRotate = parseInt(currentRotate/360)*360-360+90;
+						}
+						break;
+					case "MOV TOP":
+						currentTranslateY = currentTranslateY - 50;
+						currentRotate = parseInt(currentRotate/360)*360;
+						break;
+					case "MOV BOT":
+						currentTranslateY = currentTranslateY + 50;
+						if (currentRotate>=0) {
+							currentRotate = parseInt(currentRotate/360)*360+180;
+						}else{
+							currentRotate = parseInt(currentRotate/360)*360-360+180;
+						}
+						break;
+					default:
+						break;
+				}
+				if(currentTranslateX < 0) {
+					currentTranslateX = 0;
+				}
+				if(currentTranslateX > 400) {
+					currentTranslateX = 400;
+				}
+				if(currentTranslateY < 0) {
+					currentTranslateY = 0;
+				}
+				if(currentTranslateY > 400) {
+					currentTranslateY = 400;
+				}
+				currentTranslate = currentTranslateX + "px," + currentTranslateY;
+				var littleblock = document.getElementById("littleBlock");
+				littleblock.style.webkitTransform = "translate(" + currentTranslate + "px)" + "rotate(" + currentRotate + "deg)";
+			}
+		</script>
+	</head>
+
+	<body>
+		<div class="divbody">
+			<canvas id="chessboard" width="452" height="452"></canvas>
+			<div class="littleBlock" id="littleBlock">
+				<div class="littleBlockDirection">
+
+				</div>
+			</div>
+		</div>
+		<br />
+		<input type="button" name="" id="" value="TUN LEF" onclick="tunlef()" />
+		<input type="button" name="" id="" value="TUN RIG" onclick="tunrig()" />
+		<input type="button" name="" id="" value="TUN BAC" onclick="tunbac()" />
+		<input type="button" name="" id="" value="GO" onclick="tungo()" />
+		<br />
+		<div class="trabtn">
+			<input type="button" name="" id="" value="TRA LEF" onclick="tra(this)" />
+			<input type="button" name="" id="" value="TRA TOP" onclick="tra(this)" />
+			<input type="button" name="" id="" value="TRA RIG" onclick="tra(this)" />
+			<input type="button" name="" id="" value="TRA BOT" onclick="tra(this)" />
+		</div>
+		<div class="tramovbtn">
+			<input type="button" name="" id="" value="MOV LEF" onclick="tra(this)" />
+			<input type="button" name="" id="" value="MOV TOP" onclick="tra(this)" />
+			<input type="button" name="" id="" value="MOV RIG" onclick="tra(this)" />
+			<input type="button" name="" id="" value="MOV BOT" onclick="tra(this)" />
+		</div>
+
+		<script type="text/javascript">
+			//初始化棋盘
+			drawChessboard();
+		</script>
+	</body>
+
+</html>
