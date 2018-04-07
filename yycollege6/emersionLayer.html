@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			body{
+				margin: 0;
+				text-align: center;
+			}
+			.content{
+				display: inline-block;
+				width: 99%;
+				background-color: white;
+				position: relative;
+			}
+			.shade{
+				display: inline-block;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				left: 0;
+				top: 0;
+				background-color: black;
+				opacity: 0;
+				pointer-events: none;
+			}
+			p{
+				display: block;
+				height: 400px;
+			}
+			.emersionLayer{
+				width: 600px;
+				height: 300px;
+				background-color: white;
+				border: 1px solid black;
+				position: fixed;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%,-50%);
+				text-align: left;
+				text-indent: 10px;
+				display: none;
+				outline: none;
+			}
+			.title{
+				width: 100%;
+				height: 50px;
+				background-color: #aaa;
+				text-align: left;
+				line-height: 50px;
+				text-indent: 10px;
+			}
+			.layercontent{
+				width: 100%;
+				height: 250px;
+				position: relative;
+			}
+			.confirm,.quit{
+				display: inline-block;
+				position: absolute;
+				width: 70px;
+				height: 50px;
+				background-color: #aaa;
+				line-height: 50px;
+			}
+			.confirm{
+				right: 20%;
+				bottom: 5%;
+			}
+			.quit{
+				right: 5%;
+				bottom: 5%;
+			}
+		</style>
+		<script type="text/javascript">
+			function emersionLayer(){
+				var emersionLayer=document.getElementById("emersionLayer");
+				var shade=document.getElementById("shade");
+				emersionLayer.style.display="block";
+				shade.style.opacity=0.2;
+				emersionLayer.focus();
+				shade.style.pointerEvents="all";
+			}
+			function disappearLayer(){
+				var emersionLayer=document.getElementById("emersionLayer");
+				var shade=document.getElementById("shade");
+				emersionLayer.style.display="none";
+				shade.style.opacity=0;
+				shade.style.pointerEvents="none";
+			}
+		</script>
+	</head>
+	<body>
+		<div class="content">
+			<div class="shade" id="shade">
+			</div>
+			
+			<p>这是测试内容这是测试内容这是测试内容这是测试内容<br />
+			<input type="button" name="" id="" value="点击跳出浮出层" onclick="emersionLayer()"/>
+			</p>
+			<p>这是测试内容这是测试内容这是测试内容这是测试内容</p>
+			<p>这是测试内容这是测试内容这是测试内容这是测试内容</p>
+		</div>
+		<div class="emersionLayer" id="emersionLayer" tabindex="0" onblur="disappearLayer()">
+			<div class="title">
+				这是一个浮出层
+			</div>
+			<div class="layercontent">
+				<span id="">
+					
+				</span>这是一个浮出层
+				<input type="button" name="" class="confirm" id="confirm" value="确定" onclick="disappearLayer()"/>
+			<input type="button" name="" class="quit" id="quit" value="取消" onclick="disappearLayer()"/>
+			</div>
+			
+		</div>
+	</body>
+</html>
