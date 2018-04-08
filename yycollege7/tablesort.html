@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			table {
+				width: 500px;
+			}
+			
+			th {
+				background-color: #aaa;
+				height: 50px;
+				cursor: pointer;
+				position: relative;
+			}
+			
+			td {
+				height: 70px;
+				text-align: center;
+			}
+			
+			.tri {
+				position: absolute;
+				right: 7%;
+				top: 30%;
+				border-left: 7px solid transparent;
+				border-right: 7px solid transparent;
+				border-bottom: 9px solid white;
+			}
+			.tri2{
+				position: absolute;
+				right: 7%;
+				bottom: 30%;
+				border-left: 7px solid transparent;
+				border-right: 7px solid transparent;
+				border-top: 9px solid white;
+			}
+		</style>
+		<script type="text/javascript">
+			//判断点击次数进行正逆排序
+			var chinum = 0;
+			var matnum = 0;
+			var engnum = 0;
+			var sumnum = 0;
+
+			function scoreSort(subject) {
+				var trlist = document.getElementsByTagName("tr");
+				var score = new Array;
+				for(var k = 1; k < trlist.length; k++) {
+					trlist[k].children[4].innerHTML = parseInt(trlist[k].children[1].innerHTML) + parseInt(trlist[k].children[2].innerHTML) + parseInt(trlist[k].children[3].innerHTML);
+				}
+				for(var i = 0; i < trlist.length; i++) {
+					score[i] = new Array;
+
+					for(var j = 0; j < 5; j++) {
+						score[i][j] = trlist[i].children[j].innerHTML;
+					}
+				}
+				var subjectchose = subject.id;
+				switch(subjectchose) {
+					case "chi":
+						if(chinum == 0) {
+							chinum = 1;
+							score.sort(function(a, b) {
+								return b[1] - a[1];
+							});
+						} else {
+							chinum = 0;
+							score.sort(function(a, b) {
+								return a[1] - b[1];
+							});
+						}
+						break;
+					case "mat":
+						if(matnum == 0) {
+							matnum = 1;
+							score.sort(function(a, b) {
+								return b[2] - a[2];
+							});
+						} else {
+							matnum = 0;
+							score.sort(function(a, b) {
+								return a[2] - b[2];
+							});
+						}
+						break;
+					case "eng":
+						if(engnum == 0) {
+							engnum = 1;
+							score.sort(function(a, b) {
+								return b[3] - a[3];
+							});
+						} else {
+							engnum = 0;
+							score.sort(function(a, b) {
+								return a[3] - b[3];
+							});
+						}
+						break;
+					case "sum":
+						if(sumnum == 0) {
+							sumnum = 1;
+							score.sort(function(a, b) {
+								return b[4] - a[4];
+							});
+						} else {
+							sumnum = 0;
+							score.sort(function(a, b) {
+								return a[4] - b[4];
+							});
+						}
+						break;
+					default:
+						break;
+				}
+				for(var i = 1; i < trlist.length; i++) {
+					for(var j = 0; j < 5; j++) {
+						trlist[i].children[j].innerHTML = score[i][j];
+					}
+				}
+			}
+			//添加一行
+			function addrow() {
+				var tableadd = document.getElementsByTagName("table")[0];
+				var tradd = document.createElement("tr");
+				for(var i = 0; i < 5; i++) {
+					var tdadd = document.createElement("td");
+					tdadd.contentEditable = "true";
+					tradd.appendChild(tdadd);
+				}
+				tableadd.children[0].appendChild(tradd);
+			}
+			//减少一行
+			function delrow() {
+				var tableadd = document.getElementsByTagName("table")[0];
+				console.log(tableadd.children[0].children.length);
+				if(tableadd.children[0].children.length >= 2) {
+					tableadd.children[0].children[(tableadd.children[0].children.length) - 1].remove();
+				}
+
+			}
+			//页面加载时td变为可编辑对象
+			function init() {
+				var tdlist = document.getElementsByTagName("td");
+				for(var i = 0; i < tdlist.length; i++) {
+					tdlist[i].contentEditable = "true";
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<table border="" cellspacing="" cellpadding="">
+			<tr>
+				<th>姓名</th>
+				<th class="chi" id="chi" onclick="scoreSort(this)">语文
+					<div class="tri"></div><div class="tri2"></div>
+				</th>
+				<th class="mat" id="mat" onclick="scoreSort(this)">数学
+					<div class="tri"></div><div class="tri2"></div>
+				</th>
+				<th class="eng" id="eng" onclick="scoreSort(this)">英语
+					<div class="tri"></div><div class="tri2"></div>
+				</th>
+				<th class="sum" id="sum" onclick="scoreSort(this)">总分
+					<div class="tri"></div><div class="tri2"></div>
+				</th>
+			</tr>
+			<tr>
+				<td>小明</td>
+				<td>80</td>
+				<td>90</td>
+				<td>70</td>
+				<td>240</td>
+			</tr>
+			<tr>
+				<td>小红</td>
+				<td>90</td>
+				<td>60</td>
+				<td>90</td>
+				<td>240</td>
+			</tr>
+			<tr>
+				<td>小亮</td>
+				<td>60</td>
+				<td>100</td>
+				<td>70</td>
+				<td>230</td>
+			</tr>
+		</table>
+		<br />
+		<input type="button" name="" id="" value="增加一行" onclick="addrow()" />
+		<input type="button" name="" id="" value="减少一行" onclick="delrow()" />
+
+		<script type="text/javascript">
+			init();
+		</script>
+	</body>
+
+</html>
